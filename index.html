@@ -93,14 +93,15 @@
       text-align: center; background: var(--cream);
     }
 
-    /* ✏️ 英文草书签名 */
+    /* ✏️ 英文草书签名
+       动画在页面加载时触发，不依赖滚动位置 */
     .hero-name-cursive {
       font-family: var(--cursive);
       font-size: clamp(4.5rem, 9vw, 8rem);
       font-weight: 700; color: var(--ink); line-height: 1.1;
       opacity: 0;
       animation: fade-up-in 1.1s cubic-bezier(0.22,1,0.36,1) forwards;
-      animation-delay: 0.2s;
+      animation-delay: 0.3s;
     }
 
     /* ✏️ 中文名 */
@@ -111,18 +112,18 @@
       margin-top: 0.4rem;
       opacity: 0;
       animation: fade-up-in 0.9s ease forwards;
-      animation-delay: 0.9s;
+      animation-delay: 1.1s;
     }
 
     .hero-divider {
       width: 48px; height: 1px; background: var(--mint); margin: 1.8rem auto;
-      opacity: 0; animation: fade-up-in 0.7s ease forwards; animation-delay: 1.3s;
+      opacity: 0; animation: fade-up-in 0.7s ease forwards; animation-delay: 1.6s;
     }
 
     /* ✏️ 副标题文字 */
     .hero-sub {
       font-size: 0.92rem; color: var(--ink-soft); line-height: 2;
-      opacity: 0; animation: fade-up-in 0.7s ease forwards; animation-delay: 1.5s;
+      opacity: 0; animation: fade-up-in 0.7s ease forwards; animation-delay: 1.9s;
     }
 
     .hero-cta {
@@ -130,7 +131,7 @@
       border: 1px solid var(--mint); color: var(--ink-mid); text-decoration: none;
       font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase;
       transition: all 0.25s; font-weight: 400;
-      opacity: 0; animation: fade-up-in 0.7s ease forwards; animation-delay: 1.7s;
+      opacity: 0; animation: fade-up-in 0.7s ease forwards; animation-delay: 2.2s;
     }
     .hero-cta:hover { background: var(--mint); color: var(--white); }
 
@@ -241,8 +242,11 @@
         <img src="slide2.jpg" alt="Photo 2">
       </div>
 
-      <!-- ✏️ 加第3张：删掉注释符号启用
+      <!-- ✏️ 第3张 -->
       <div class="carousel-slide"><img src="slide3.jpg" alt="Photo 3"></div>
+
+      <!-- ✏️ 加第4张：复制上面一行，改文件名
+      <div class="carousel-slide"><img src="slide4.jpg" alt="Photo 4"></div>
       -->
 
     </div>
@@ -263,7 +267,7 @@
     <p class="hero-sub">
       Molecular and Cell Biology<br>
       University of California, San Diego<br>
-      <span style="font-size:0.85rem;">hel061@ucsd.edu</span>
+      <span style="font-size:0.85rem;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4e262b227e787f0e3b2d3d2a602b2a3b">[email&#160;protected]</a></span>
     </p>
     <a href="#about" class="hero-cta">Learn more</a>
   </section>
@@ -305,7 +309,7 @@
   </footer>
 
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     /* 轮播（不需要改）*/
     const track    = document.getElementById('carouselTrack');
     const slides   = track.querySelectorAll('.carousel-slide');
@@ -340,10 +344,4 @@
 
     /* 滚动淡入 */
     const obs = new IntersectionObserver((entries) => {
-      entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
-  </script>
-
-</body>
-</html>
+      entries.forEach((e, 
