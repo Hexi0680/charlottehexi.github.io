@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About · Charlotte Liu</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%23a8d8c8'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='22' font-weight='700' fill='%23fff' letter-spacing='1'>CL</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+SC:wght@300;400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --mint:       #a8d8c8;
+      --mint-light: #d6efe8;
+      --mint-pale:  #f0faf6;
+      --mint-deep:  #6db8a0;
+      --ink:        #1a2621;
+      --ink-mid:    #3d5249;
+      --ink-soft:   #6b8a7e;
+      --cream:      #fafaf8;
+      --white:      #ffffff;
+      --serif:      'Cormorant Garamond', Georgia, serif;
+      --serif-zh:   'Noto Serif SC', serif;
+      --sans:       'Jost', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--cream); color: var(--ink); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+
+    /* ━━ 导航栏 ━━ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 3rem;
+      background: rgba(250,250,248,0.88); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(168,216,200,0.3);
+    }
+    .nav-logo {
+      width: 38px; height: 38px; background: var(--mint); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-size: 15px; font-weight: 600;
+      color: var(--white); letter-spacing: 1px; text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.8rem; font-weight: 400; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--ink-mid); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--mint-deep); }
+    /* 当前页面高亮 */
+    .nav-links a.active { color: var(--mint-deep); border-bottom: 1px solid var(--mint-deep); padding-bottom: 2px; }
+
+    /* ━━ 轮播（页面顶部，导航栏下方）━━ */
+    .carousel {
+      position: relative; width: 100%;
+      height: 520px;           /* ✏️ 改数字调高度 */
+      margin-top: 72px;        /* 导航栏高度，不要改 */
+      overflow: hidden; background: var(--ink);
+    }
+    .carousel-track { display: flex; height: 100%; transition: transform 0.6s cubic-bezier(0.77,0,0.18,1); }
+    .carousel-slide { flex: 0 0 100%; height: 100%; position: relative; overflow: hidden; }
+    /* ✏️ 照片裁剪焦点：center top = 顶部，center center = 居中 */
+    .carousel-slide img { width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block; }
+    .carousel-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(26,38,33,0.12) 0%, rgba(26,38,33,0.04) 50%, rgba(26,38,33,0.18) 100%); }
+    .carousel-btn {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+      width: 44px; height: 44px; background: rgba(250,250,248,0.7);
+      border: none; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s; backdrop-filter: blur(6px);
+    }
+    .carousel-btn:hover { background: rgba(168,216,200,0.85); }
+    .carousel-btn svg { width: 18px; height: 18px; stroke: var(--ink); fill: none; stroke-width: 2; stroke-linecap: round; }
+    .carousel-btn.prev { left: 1.5rem; }
+    .carousel-btn.next { right: 1.5rem; }
+    .carousel-dots { position: absolute; bottom: 1.2rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem; z-index: 10; }
+    .carousel-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); border: none; cursor: pointer; padding: 0; transition: background 0.3s, transform 0.3s; }
+    .carousel-dot.active { background: var(--white); transform: scale(1.3); }
+
+    /* ━━ 左照片 + 右文字布局 ━━ */
+    .about-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* ✏️ 改比例，如 "45% 55%" */
+      min-height: calc(100vh - 72px);
+      background: var(--white);
+    }
+
+    /* 左边：照片铺满，sticky 固定 */
+    .about-photo-col {
+      height: calc(100vh - 72px);
+      position: sticky; top: 72px;
+      overflow: hidden;
+    }
+    /* ✏️ 照片裁剪位置 */
+    .about-photo-col img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      display: block;
+    }
+
+    /* 右边：文字，自然滚动 */
+    .about-text-col {
+      padding: 6rem 4rem 6rem 5rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+
+    /* ✏️ 右侧大名字 */
+    .about-name {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      font-weight: 300; color: var(--ink);
+      line-height: 1.15; margin-bottom: 2rem;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .about-name span {
+      display: block;
+      font-family: var(--serif-zh);
+      font-size: 0.55em;
+      letter-spacing: 0.3em;
+      color: var(--mint-deep);
+      text-transform: none;
+      margin-top: 0.3rem;
+    }
+
+    /* ✏️ 正文段落 */
+    .about-text-col p {
+      font-size: 1rem; line-height: 1.95;
+      color: var(--ink-mid); margin-bottom: 1.3rem;
+    }
+    .about-text-col p:last-child { margin-bottom: 0; }
+
+    /* ━━ 页脚 ━━ */
+    footer {
+      text-align: center; padding: 2rem 1rem;
+      font-size: 0.8rem; color: var(--ink-soft);
+      letter-spacing: 0.05em; border-top: 1px solid var(--mint-light); line-height: 2;
+      background: var(--cream);
+    }
+    .footer-quote { font-family: var(--serif-zh); font-size: 1rem; color: var(--ink-soft); display: block; margin-bottom: 0.3rem; }
+
+    /* ━━ 动画 ━━ */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* ━━ 手机端 ━━ */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .carousel { height: 260px; margin-top: 64px; }
+      .about-body { grid-template-columns: 1fr; }
+      .about-photo-col { height: 70vw; position: relative; top: 0; }
+      .about-text-col { padding: 3rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 导航栏（和主页一样）-->
+  <nav>
+    <a href="index.html" class="nav-logo">CL</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="docs/cv-website.pdf" target="_blank">CV</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+
+  <!-- 轮播（页面最顶部）
+       ✏️ 文件名对应你上传的照片
+       ✏️ 加照片：复制 carousel-slide 块，改文件名 -->
+  <div class="carousel" id="mainCarousel">
+    <div class="carousel-track" id="carouselTrack">
+
+      <!-- ✏️ 第1张 -->
+      <div class="carousel-slide">
+        <img src="slide1.jpg" alt="Photo 1">
+      </div>
+
+      <!-- ✏️ 第2张 -->
+      <div class="carousel-slide">
+        <img src="slide2.jpg" alt="Photo 2">
+      </div>
+
+      <!-- ✏️ 加第3张：删掉注释符号启用
+      <div class="carousel-slide"><img src="slide3.jpg" alt="Photo 3"></div>
+      -->
+
+    </div>
+    <button class="carousel-btn prev" id="prevBtn"><svg viewBox="0 0 18 18"><polyline points="11 4 6 9 11 14"/></svg></button>
+    <button class="carousel-btn next" id="nextBtn"><svg viewBox="0 0 18 18"><polyline points="7 4 12 9 7 14"/></svg></button>
+    <div class="carousel-dots" id="carouselDots"></div>
+  </div>
+
+
+  <!-- 左照片 + 右文字 -->
+  <div class="about-body">
+
+    <!-- 左边照片
+         ✏️ 照片文件名：photo.jpg -->
+    <div class="about-photo-col">
+      <img src="photo.jpg" alt="Charlotte Liu">
+    </div>
+
+    <!-- 右边文字 -->
+    <div class="about-text-col fade-in">
+
+      <!-- ✏️ 右侧大名字 -->
+      <h1 class="about-name">
+        Charlotte Liu
+        <span>刘赫熙</span>
+      </h1>
+
+      <!-- ✏️ 第一段 -->
+      <p>Hi! I'm Charlotte Liu (刘赫熙), an undergraduate student at the University of California, San Diego, class of 2029. I major in Molecular and Cell Biology with a minor in Bioethics. I grew up in Shunde, Guangdong, China. My name Hexi is pronounced "huh-see" — feel free to call me Charlotte!</p>
+
+      <!-- ✏️ 第二段 -->
+      <p>I am passionate about understanding life at the molecular level. My academic journey has given me a deep appreciation for the elegance of biological systems and the power of experimental science.</p>
+
+      <!-- ✏️ 第三段 -->
+      <p>Outside of academics, I find joy in ballet, figure skating, and playing the pipa (琵琶). I am a collaborator by nature and always believe in win-win solutions.</p>
+
+    </div>
+  </div>
+
+
+  <!-- ✏️ 页脚 -->
+  <footer>
+    <span class="footer-quote">「路虽远，行之将至」</span>
+    © 2026 Charlotte Liu · 刘赫熙 &nbsp;·&nbsp; Built with care
+  </footer>
+
+
+  <script>
+    /* 轮播（不需要改）*/
+    const track    = document.getElementById('carouselTrack');
+    const slides   = track.querySelectorAll('.carousel-slide');
+    const dotsWrap = document.getElementById('carouselDots');
+    const total    = slides.length;
+    let current = 0, timer;
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(dot);
+    });
+
+    function goTo(n) {
+      current = (n + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dotsWrap.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+
+    /* ✏️ 自动播放间隔：4000 = 4秒 */
+    function startAuto() { timer = setInterval(() => goTo(current + 1), 4000); }
+    function stopAuto()  { clearInterval(timer); }
+
+    document.getElementById('prevBtn').addEventListener('click', () => { stopAuto(); goTo(current - 1); startAuto(); });
+    document.getElementById('nextBtn').addEventListener('click', () => { stopAuto(); goTo(current + 1); startAuto(); });
+
+    let touchX = 0;
+    track.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; stopAuto(); });
+    track.addEventListener('touchend',   e => { const diff = touchX - e.changedTouches[0].clientX; if (Math.abs(diff) > 40) goTo(current + (diff > 0 ? 1 : -1)); startAuto(); });
+    startAuto();
+
+    /* 淡入动画 */
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+  </script>
+
+</body>
+</html>
