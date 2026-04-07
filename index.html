@@ -1,95 +1,672 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Hexi Liu</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Charlotte Liu · 刘赫熙</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%23a8d8c8'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='22' font-weight='700' fill='%23fff' letter-spacing='1'>CL</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --mint:       #a8d8c8;
+      --mint-light: #d6efe8;
+      --mint-pale:  #f0faf6;
+      --mint-deep:  #6db8a0;
+      --ink:        #1a2621;
+      --ink-mid:    #3d5249;
+      --ink-soft:   #6b8a7e;
+      --cream:      #fafaf8;
+      --white:      #ffffff;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans:  'Jost', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: Arial;
-      margin: 0;
-      background-color: #f5f7fa;
+      font-family: var(--sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
     }
 
-    header {
-      text-align: center;
-      padding: 40px;
-      background-color: #4CAF50;
-      color: white;
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 3rem;
+      background: rgba(250,250,248,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(168,216,200,0.3);
     }
 
-    header img {
-      width: 120px;
+    .nav-logo {
+      width: 38px; height: 38px;
+      background: var(--mint);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif);
+      font-size: 15px; font-weight: 600;
+      color: var(--white);
+      letter-spacing: 1px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--mint-deep); }
+
+    /* ── HERO ── */
+    #home {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding-top: 80px;
+    }
+
+    .hero-text {
+      padding: 5rem 3rem 5rem 5rem;
+    }
+
+    .hero-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mint-deep);
+      margin-bottom: 1.5rem;
+      font-weight: 400;
+    }
+
+    .hero-name-en {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    .hero-name-zh {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      color: var(--mint-deep);
+      letter-spacing: 0.1em;
+      margin-top: 0.3rem;
+    }
+
+    .hero-divider {
+      width: 48px; height: 1px;
+      background: var(--mint);
+      margin: 2rem 0;
+    }
+
+    .hero-sub {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      line-height: 1.8;
+      max-width: 340px;
+    }
+
+    .hero-sub strong { color: var(--ink-mid); font-weight: 400; }
+
+    .hero-cta {
+      display: inline-block;
+      margin-top: 2.5rem;
+      padding: 0.8rem 2rem;
+      border: 1px solid var(--mint);
+      color: var(--ink-mid);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: all 0.25s;
+      font-weight: 400;
+    }
+    .hero-cta:hover {
+      background: var(--mint);
+      color: var(--white);
+    }
+
+    .hero-photo-wrap {
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      background: var(--mint-pale);
+    }
+
+    .hero-photo-wrap::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--mint-light) 0%, var(--mint-pale) 100%);
+    }
+
+    /* Photo placeholder — replace <div class="photo-placeholder"> with <img src="your-photo.jpg"> */
+    .photo-placeholder {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem;
+    }
+
+    .photo-placeholder-icon {
+      width: 120px; height: 120px;
       border-radius: 50%;
-      margin-bottom: 10px;
+      background: rgba(168,216,200,0.4);
+      display: flex; align-items: center; justify-content: center;
     }
+    .photo-placeholder-icon svg { opacity: 0.6; }
 
-    .container {
-      display: flex;
-      justify-content: space-around;
-      padding: 20px;
-      gap: 20px;
-    }
-
-    .card {
-      background-color: white;
-      padding: 20px;
-      border-radius: 12px;
-      width: 30%;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    h2 {
-      border-bottom: 2px solid #4CAF50;
-      padding-bottom: 5px;
-    }
-
-    p {
+    .photo-placeholder-text {
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.08em;
+      text-align: center;
       line-height: 1.6;
     }
 
+    .hero-photo-wrap img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    /* decorative mint blob */
+    .blob {
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(168,216,200,0.25);
+      filter: blur(40px);
+      pointer-events: none;
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 6rem 0; }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 3rem;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mint-deep);
+      margin-bottom: 1rem;
+      font-weight: 400;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.1;
+      margin-bottom: 3rem;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--white); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-sidebar {}
+
+    .about-photo-small {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: var(--mint-pale);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink-soft);
+      font-size: 0.75rem;
+      text-align: center;
+    }
+
+    .about-photo-small img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    .about-info { display: flex; flex-direction: column; gap: 0.6rem; }
+    .about-info-item { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.5; }
+    .about-info-item strong { color: var(--ink-mid); font-weight: 400; display: block; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .about-content p {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: var(--ink-mid);
+      margin-bottom: 1.4rem;
+    }
+
+    .about-content p:last-child { margin-bottom: 0; }
+
+    .interests-list {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+      margin-top: 2rem;
+    }
+
+    .interest-tag {
+      padding: 0.35rem 1rem;
+      background: var(--mint-pale);
+      border: 1px solid var(--mint-light);
+      border-radius: 2px;
+      font-size: 0.8rem;
+      color: var(--ink-mid);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── CV ── */
+    #cv { background: var(--cream); }
+
+    .cv-download {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      margin-bottom: 3rem;
+      padding: 0.7rem 1.6rem;
+      background: var(--mint);
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: background 0.2s;
+      font-weight: 400;
+    }
+    .cv-download:hover { background: var(--mint-deep); }
+
+    .cv-section { margin-bottom: 3.5rem; }
+
+    .cv-section-title {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mint-deep);
+      border-bottom: 1px solid var(--mint-light);
+      padding-bottom: 0.6rem;
+      margin-bottom: 1.8rem;
+      font-weight: 400;
+    }
+
+    .cv-entry {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 0 2rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .cv-year {
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      padding-top: 0.15rem;
+      line-height: 1.5;
+    }
+
+    .cv-entry-main {}
+    .cv-entry-title {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 0.15rem;
+    }
+    .cv-entry-sub {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      margin-bottom: 0.3rem;
+    }
+    .cv-entry-desc {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      line-height: 1.7;
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--mint-pale); border-top: 1px solid var(--mint-light); }
+
+    .contact-inner {
+      display: flex; gap: 4rem; align-items: flex-start;
+    }
+
+    .contact-left { flex: 1; }
+
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 0.8rem;
+      font-size: 0.9rem; color: var(--ink-mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .contact-link:hover { color: var(--mint-deep); }
+    .contact-link-icon {
+      width: 32px; height: 32px;
+      background: var(--mint-light);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-link-icon svg { width: 14px; height: 14px; stroke: var(--ink-mid); }
+
+    .contact-note {
+      flex: 0 0 280px;
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      padding-top: 0.5rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.75rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.08em;
+      border-top: 1px solid var(--mint-light);
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      #home { grid-template-columns: 1fr; }
+      .hero-text { padding: 2rem 1.5rem; padding-top: 6rem; }
+      .hero-photo-wrap { height: 60vw; }
+      .container { padding: 0 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .about-photo-small { aspect-ratio: 1/1; }
+      .cv-entry { grid-template-columns: 1fr; gap: 0.2rem; }
+      .contact-inner { flex-direction: column; gap: 2rem; }
+      .contact-note { flex: none; }
+    }
   </style>
 </head>
-
 <body>
 
-<header>
-  <!-- 换成你的照片链接 -->
-  <img src="https://via.placeholder.com/120">
-  <h1>Hexi Liu</h1>
-  <p>UC San Diego | Molecular and Cell Biology</p>
-</header>
+  <!-- NAV -->
+  <nav>
+    <a href="#home" class="nav-logo">CL</a>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#cv">CV</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
 
-<div class="container">
+  <!-- HERO -->
+  <section id="home">
+    <div class="hero-text fade-in">
+      <p class="hero-tag">Academic Portfolio</p>
+      <h1 class="hero-name-en">Charlotte Liu</h1>
+      <p class="hero-name-zh">刘赫熙</p>
+      <div class="hero-divider"></div>
+      <p class="hero-sub">
+        <strong>Undergraduate Researcher</strong><br>
+        Molecular and Cell Biology<br>
+        University of California, San Diego
+      </p>
+      <a href="#about" class="hero-cta">Learn more</a>
+    </div>
 
-  <!-- About Me -->
-  <div class="card">
-    <h2>About Me</h2>
-    <p>
-      I am a first-year undergraduate at UC San Diego studying Molecular and Cell Biology.
-      I am interested in women's health, endocrinology, and bioinformatics.
-    </p>
-  </div>
+    <div class="hero-photo-wrap">
+      <!-- 
+        把下面这个 div 换成 <img src="your-photo.jpg" alt="Charlotte Liu"> 就会显示你的照片！
+      -->
+      <div class="photo-placeholder">
+        <div class="photo-placeholder-icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#6db8a0" stroke-width="1.5">
+            <circle cx="24" cy="18" r="8"/>
+            <path d="M8 40c0-8.8 7.2-16 16-16s16 7.2 16 16"/>
+          </svg>
+        </div>
+        <p class="photo-placeholder-text">
+          将 &lt;img src="your-photo.jpg"&gt;<br>替换这个区块即可显示照片
+        </p>
+      </div>
+      <div class="blob"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <p class="section-label fade-in">About me</p>
+      <h2 class="section-title fade-in">A little about me</h2>
+
+      <div class="about-grid fade-in">
+        <div class="about-sidebar">
+          <!-- 同上，换成 <img> 显示照片 -->
+          <div class="about-photo-small">
+            <span style="font-size:0.75rem; color:var(--ink-soft); text-align:center; padding:1rem;">
+              Photo<br>placeholder
+            </span>
+          </div>
+          <div class="about-info">
+            <div class="about-info-item">
+              <strong>Affiliation</strong>
+              UC San Diego
+            </div>
+            <div class="about-info-item">
+              <strong>Major</strong>
+              Molecular and Cell Biology
+            </div>
+            <div class="about-info-item">
+              <strong>Email</strong>
+              <!-- 改成你的邮箱 -->
+              your@ucsd.edu
+            </div>
+          </div>
+        </div>
+
+        <div class="about-content">
+          <p>
+            Hi! I'm Charlotte Liu (刘赫熙), an undergraduate student at the University of California, San Diego, majoring in Molecular and Cell Biology.
+          </p>
+          <p>
+            <!-- 在这里填写你自己的介绍！ -->
+            I am passionate about understanding life at the molecular level — from how cells communicate to the mechanisms underlying disease. My academic journey has given me a deep appreciation for the elegance of biological systems and the power of experimental science.
+          </p>
+          <p>
+            Outside of the lab, I enjoy [your hobbies here]. I believe that curiosity, creativity, and collaboration are the driving forces of great science.
+          </p>
+
+          <div class="interests-list">
+            <!-- 改成你自己感兴趣的方向 -->
+            <span class="interest-tag">Cell Biology</span>
+            <span class="interest-tag">Molecular Biology</span>
+            <span class="interest-tag">Biochemistry</span>
+            <span class="interest-tag">Research</span>
+            <span class="interest-tag">Science Communication</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- CV -->
-  <div class="card">
-    <h2>CV</h2>
-    <p>
-      • UCSD Lab (onboarding)<br>
-      • Postpartum Unit Volunteer<br>
-      • MATLAB & R (basic)
-    </p>
-  </div>
+  <section id="cv">
+    <div class="container">
+      <p class="section-label fade-in">Curriculum Vitae</p>
+      <h2 class="section-title fade-in">My CV</h2>
 
-  <!-- High School -->
-  <div class="card">
-    <h2>High School Achievements</h2>
-    <p>
-      • STEM coursework (Harvard)<br>
-      • Academic achievements (A grades)<br>
-      • Leadership / activities
-    </p>
-  </div>
+      <!-- 如果你有 PDF 版 CV，把 # 换成文件路径 -->
+      <a href="cv.pdf" class="cv-download fade-in" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1v8M4 6l3 3 3-3M2 11h10"/></svg>
+        Download PDF
+      </a>
 
-</div>
+      <!-- EDUCATION -->
+      <div class="cv-section fade-in">
+        <h3 class="cv-section-title">Education</h3>
 
+        <div class="cv-entry">
+          <div class="cv-year">2022 – Present</div>
+          <div class="cv-entry-main">
+            <p class="cv-entry-title">B.S. in Molecular and Cell Biology</p>
+            <p class="cv-entry-sub">University of California, San Diego</p>
+            <p class="cv-entry-desc">Expected graduation: [year] · GPA: [your GPA]</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESEARCH -->
+      <div class="cv-section fade-in">
+        <h3 class="cv-section-title">Research Experience</h3>
+
+        <div class="cv-entry">
+          <div class="cv-year">20XX – Present</div>
+          <div class="cv-entry-main">
+            <p class="cv-entry-title">Undergraduate Researcher</p>
+            <p class="cv-entry-sub">[Lab Name] Lab · UC San Diego</p>
+            <p class="cv-entry-desc">Brief description of your research project and key contributions.</p>
+          </div>
+        </div>
+
+        <div class="cv-entry">
+          <div class="cv-year">20XX – 20XX</div>
+          <div class="cv-entry-main">
+            <p class="cv-entry-title">[Another Position]</p>
+            <p class="cv-entry-sub">[Institution / Lab]</p>
+            <p class="cv-entry-desc">Brief description.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PUBLICATIONS / PRESENTATIONS -->
+      <div class="cv-section fade-in">
+        <h3 class="cv-section-title">Publications & Presentations</h3>
+
+        <div class="cv-entry">
+          <div class="cv-year">20XX</div>
+          <div class="cv-entry-main">
+            <p class="cv-entry-title">[Poster / Talk / Paper Title]</p>
+            <p class="cv-entry-sub">[Conference / Journal Name]</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- HONORS -->
+      <div class="cv-section fade-in">
+        <h3 class="cv-section-title">Honors & Awards</h3>
+
+        <div class="cv-entry">
+          <div class="cv-year">20XX</div>
+          <div class="cv-entry-main">
+            <p class="cv-entry-title">[Award Name]</p>
+            <p class="cv-entry-sub">UC San Diego</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SKILLS -->
+      <div class="cv-section fade-in">
+        <h3 class="cv-section-title">Skills & Techniques</h3>
+        <div class="interests-list">
+          <span class="interest-tag">PCR</span>
+          <span class="interest-tag">Cell Culture</span>
+          <span class="interest-tag">Western Blot</span>
+          <span class="interest-tag">Microscopy</span>
+          <span class="interest-tag">Python</span>
+          <!-- 加上你自己的技能 -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container">
+      <p class="section-label fade-in">Get in touch</p>
+      <h2 class="section-title fade-in">Contact</h2>
+
+      <div class="contact-inner fade-in">
+        <div class="contact-left">
+          <div class="contact-links">
+            <a href="mailto:your@ucsd.edu" class="contact-link">
+              <div class="contact-link-icon">
+                <svg viewBox="0 0 16 16" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 4.5l7 4.5 7-4.5"/></svg>
+              </div>
+              your@ucsd.edu
+            </a>
+            <a href="https://linkedin.com/in/yourprofile" target="_blank" class="contact-link">
+              <div class="contact-link-icon">
+                <svg viewBox="0 0 16 16" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="14" height="14" rx="2"/><path d="M5 7v4M5 5v.01M8 11V8.5C8 7.7 8.7 7 9.5 7s1.5.7 1.5 1.5V11"/></svg>
+              </div>
+              LinkedIn
+            </a>
+            <a href="https://github.com/yourusername" target="_blank" class="contact-link">
+              <div class="contact-link-icon">
+                <svg viewBox="0 0 16 16" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11.5c-3 1-3-1.5-4-2m8 4v-2.8a2.4 2.4 0 0 0-.7-1.8c2.4-.3 4.7-1.2 4.7-5a3.9 3.9 0 0 0-1-2.7 3.6 3.6 0 0 0-.1-2.6s-.8-.3-2.7 1a9.3 9.3 0 0 0-5 0C3.8.9 3 1.2 3 1.2a3.6 3.6 0 0 0-.1 2.6 3.9 3.9 0 0 0-1 2.7c0 3.8 2.3 4.7 4.7 5a2.4 2.4 0 0 0-.7 1.8V15"/></svg>
+              </div>
+              GitHub
+            </a>
+          </div>
+        </div>
+        <p class="contact-note">
+          "Science is not only a disciple of reason but also one of romance and passion."
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2024 Charlotte Liu · 刘赫熙 &nbsp;·&nbsp; Built with care
+  </footer>
+
+  <script>
+    // Fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>
