@@ -12,7 +12,7 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* 🎨 颜色变量 */
+    /* 🎨 颜色 */
     :root {
       --mint:       #a8d8c8;
       --mint-light: #d6efe8;
@@ -46,7 +46,7 @@
       font-family: var(--serif); font-size: 15px; font-weight: 600;
       color: var(--white); letter-spacing: 1px; text-decoration: none;
     }
-    /* ✏️ 导航链接：复制 <li> 可加新页面 */
+    /* ✏️ 导航链接：复制 <li> 加新项目 */
     .nav-links { display: flex; gap: 2.4rem; list-style: none; }
     .nav-links a {
       font-size: 0.8rem; font-weight: 400; letter-spacing: 0.12em;
@@ -54,12 +54,43 @@
     }
     .nav-links a:hover { color: var(--mint-deep); }
 
-    /* ━━ 主页（全屏居中）━━ */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       轮播（页面最顶部，导航栏正下方）
+       ✏️ 改 height 调整高度
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .carousel {
+      position: relative; width: 100%; height: 520px;
+      margin-top: 72px; /* 导航栏高度，不要改 */
+      overflow: hidden; background: var(--ink);
+    }
+    .carousel-track { display: flex; height: 100%; transition: transform 0.6s cubic-bezier(0.77,0,0.18,1); }
+    .carousel-slide { flex: 0 0 100%; height: 100%; position: relative; overflow: hidden; }
+    /* ✏️ 照片裁剪焦点：center top / center center / center bottom */
+    .carousel-slide img { width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block; }
+    .carousel-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(26,38,33,0.1) 0%, rgba(26,38,33,0.03) 50%, rgba(26,38,33,0.15) 100%); }
+    .carousel-btn {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+      width: 44px; height: 44px; background: rgba(250,250,248,0.7);
+      border: none; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s; backdrop-filter: blur(6px);
+    }
+    .carousel-btn:hover { background: rgba(168,216,200,0.85); }
+    .carousel-btn svg { width: 18px; height: 18px; stroke: var(--ink); fill: none; stroke-width: 2; stroke-linecap: round; }
+    .carousel-btn.prev { left: 1.5rem; }
+    .carousel-btn.next { right: 1.5rem; }
+    .carousel-dots { position: absolute; bottom: 1.2rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem; z-index: 10; }
+    .carousel-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); border: none; cursor: pointer; padding: 0; transition: background 0.3s, transform 0.3s; }
+    .carousel-dot.active { background: var(--white); transform: scale(1.3); }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       주页（全屏居中名字）
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
     #home {
       min-height: 100vh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      padding-top: 72px; text-align: center;
+      text-align: center; background: var(--cream);
     }
 
     /* ✏️ 英文草书签名 */
@@ -88,13 +119,12 @@
       opacity: 0; animation: fade-up-in 0.7s ease forwards; animation-delay: 1.3s;
     }
 
-    /* ✏️ 主页副标题 */
+    /* ✏️ 副标题文字 */
     .hero-sub {
       font-size: 0.92rem; color: var(--ink-soft); line-height: 2;
       opacity: 0; animation: fade-up-in 0.7s ease forwards; animation-delay: 1.5s;
     }
 
-    /* Learn more 按钮 → 跳到 about.html */
     .hero-cta {
       display: inline-block; margin-top: 2.2rem; padding: 0.8rem 2rem;
       border: 1px solid var(--mint); color: var(--ink-mid); text-decoration: none;
@@ -104,54 +134,125 @@
     }
     .hero-cta:hover { background: var(--mint); color: var(--white); }
 
-    /* ━━ Contact（图标）━━ */
-    #contact { border-top: 1px solid var(--mint-light); padding: 3rem 0; }
-    .contact-icons { display: flex; gap: 1rem; justify-content: center; margin-top: 1.2rem; }
-    .section-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--mint-deep); font-weight: 400; text-align: center; }
-    .contact-icon-btn {
-      width: 48px; height: 48px; border-radius: 50%;
-      background: var(--ink);
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s, transform 0.2s; text-decoration: none;
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       About（左照片 + 右文字）
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+      background: var(--white);
     }
-    .contact-icon-btn:hover { background: var(--mint-deep); transform: scale(1.08); }
-    .contact-icon-btn svg { width: 20px; height: 20px; stroke: var(--white); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* 左边：照片铺满 sticky */
+    .about-photo-col {
+      height: 100vh;
+      position: sticky; top: 0;
+      overflow: hidden;
+    }
+    /* ✏️ 照片裁剪位置 */
+    .about-photo-col img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      display: block;
+    }
+
+    /* 右边：文字 */
+    .about-text-col {
+      padding: 7rem 4.5rem 7rem 5rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+
+    /* ✏️ 右侧名字 */
+    .about-name {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      font-weight: 300; color: var(--ink);
+      line-height: 1.15; margin-bottom: 0.4rem;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .about-name-zh {
+      font-family: var(--serif-zh);
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-weight: 300; color: var(--mint-deep);
+      letter-spacing: 0.3em; margin-bottom: 2.5rem;
+    }
+
+    /* ✏️ 正文段落 */
+    .about-text-col p {
+      font-size: 1rem; line-height: 1.95;
+      color: var(--ink-mid); margin-bottom: 1.3rem;
+    }
+    .about-text-col p:last-child { margin-bottom: 0; }
 
     /* ━━ 页脚 ━━ */
     footer {
-      text-align: center; padding: 2rem 1rem;
+      text-align: center; padding: 2.5rem 1rem;
       font-size: 0.8rem; color: var(--ink-soft);
-      letter-spacing: 0.05em; border-top: 1px solid var(--mint-light); line-height: 2;
+      letter-spacing: 0.05em; border-top: 1px solid var(--mint-light);
+      background: var(--cream); line-height: 2;
     }
-    /* ✏️ Quote */
+    /* ✏️ Quote，改这里的文字 */
     .footer-quote { font-family: var(--serif-zh); font-size: 1rem; color: var(--ink-soft); display: block; margin-bottom: 0.3rem; }
 
     /* ━━ 动画 ━━ */
     @keyframes fade-up-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .fade-in.visible { opacity: 1; transform: none; }
 
     /* ━━ 手机端 ━━ */
     @media (max-width: 768px) {
       nav { padding: 1rem 1.5rem; }
+      .carousel { height: 260px; margin-top: 64px; }
+      #about { grid-template-columns: 1fr; }
+      .about-photo-col { height: 70vw; position: relative; }
+      .about-text-col { padding: 3rem 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- 导航栏 -->
+  <!-- 导航栏
+       ✏️ 复制 <li> 加导航项 -->
   <nav>
-    <a href="index.html" class="nav-logo">CL</a>
+    <a href="#home" class="nav-logo">CL</a>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <!-- About 跳到独立页面 -->
-      <li><a href="about.html">About</a></li>
-      <!-- CV 直接打开 PDF -->
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
       <li><a href="docs/cv-website.pdf" target="_blank">CV</a></li>
-      <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
 
 
-  <!-- 主页全屏 -->
+  <!-- ━━ 轮播（页面最顶部）━━
+       ✏️ 照片上传到 GitHub，文件名对应下方 src
+       ✏️ 加照片：复制 carousel-slide 块，改文件名
+       ✏️ 删照片：删掉对应 carousel-slide 块 -->
+  <div class="carousel" id="mainCarousel">
+    <div class="carousel-track" id="carouselTrack">
+
+      <!-- ✏️ 第1张 -->
+      <div class="carousel-slide">
+        <img src="slide1.jpg" alt="Photo 1">
+      </div>
+
+      <!-- ✏️ 第2张 -->
+      <div class="carousel-slide">
+        <img src="slide2.jpg" alt="Photo 2">
+      </div>
+
+      <!-- ✏️ 加第3张：删掉注释符号启用
+      <div class="carousel-slide"><img src="slide3.jpg" alt="Photo 3"></div>
+      -->
+
+    </div>
+    <button class="carousel-btn prev" id="prevBtn"><svg viewBox="0 0 18 18"><polyline points="11 4 6 9 11 14"/></svg></button>
+    <button class="carousel-btn next" id="nextBtn"><svg viewBox="0 0 18 18"><polyline points="7 4 12 9 7 14"/></svg></button>
+    <div class="carousel-dots" id="carouselDots"></div>
+  </div>
+
+
+  <!-- ━━ 主页（全屏居中名字）━━ -->
   <section id="home">
     <!-- ✏️ 英文草书签名 -->
     <p class="hero-name-cursive">Charlotte Liu</p>
@@ -164,34 +265,85 @@
       University of California, San Diego<br>
       <span style="font-size:0.85rem;">hel061@ucsd.edu</span>
     </p>
-    <!-- Learn more 跳到 about.html -->
-    <a href="about.html" class="hero-cta">Learn more</a>
+    <a href="#about" class="hero-cta">Learn more</a>
   </section>
 
 
-  <!-- Contact -->
-  <section id="contact">
-    <div style="text-align:center; padding: 0 1rem;">
-      <p class="section-label">Get in touch</p>
-      <div class="contact-icons">
-        <!-- ✏️ 邮箱 -->
-        <a href="mailto:hel061@ucsd.edu" class="contact-icon-btn" title="Email">
-          <svg viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="12" rx="2"/><path d="M2 6l8 6 8-6"/></svg>
-        </a>
-        <!-- ✏️ LinkedIn -->
-        <a href="https://www.linkedin.com/in/hexi-liu-0344672b5" target="_blank" class="contact-icon-btn" title="LinkedIn">
-          <svg viewBox="0 0 20 20"><rect x="2" y="2" width="16" height="16" rx="3"/><path d="M6 9v5M6 7v.01M10 14v-3c0-1 .8-2 2-2s2 1 2 2v3"/></svg>
-        </a>
-      </div>
+  <!-- ━━ About（左照片 + 右文字）━━ -->
+  <section id="about">
+
+    <!-- 左边照片
+         ✏️ 换照片：重新上传 photo.jpg -->
+    <div class="about-photo-col">
+      <img src="photo.jpg" alt="Charlotte Liu">
+    </div>
+
+    <!-- 右边文字 -->
+    <div class="about-text-col fade-in">
+
+      <!-- ✏️ 名字 -->
+      <h2 class="about-name">Charlotte Liu</h2>
+      <p class="about-name-zh">刘 赫 熙</p>
+
+      <!-- ✏️ 第一段 -->
+      <p>Hi! I'm Charlotte Liu (刘赫熙), an undergraduate student at the University of California, San Diego, class of 2029. I major in Molecular and Cell Biology with a minor in Bioethics. I grew up in Shunde, Guangdong, China. My name Hexi is pronounced "huh-see" — feel free to call me Charlotte!</p>
+
+      <!-- ✏️ 第二段 -->
+      <p>I am passionate about understanding life at the molecular level. My academic journey has given me a deep appreciation for the elegance of biological systems and the power of experimental science.</p>
+
+      <!-- ✏️ 第三段 -->
+      <p>Outside of academics, I find joy in ballet, figure skating, and playing the pipa (琵琶). I am a collaborator by nature and always believe in win-win solutions.</p>
+
     </div>
   </section>
 
 
-  <!-- ✏️ 页脚 -->
+  <!-- ✏️ 页脚：改 quote 和年份 -->
   <footer>
     <span class="footer-quote">「路虽远，行之将至」</span>
     © 2026 Charlotte Liu · 刘赫熙 &nbsp;·&nbsp; Built with care
   </footer>
+
+
+  <script>
+    /* 轮播（不需要改）*/
+    const track    = document.getElementById('carouselTrack');
+    const slides   = track.querySelectorAll('.carousel-slide');
+    const dotsWrap = document.getElementById('carouselDots');
+    const total    = slides.length;
+    let current = 0, timer;
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(dot);
+    });
+
+    function goTo(n) {
+      current = (n + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dotsWrap.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+
+    /* ✏️ 自动播放间隔：4000 = 4秒 */
+    function startAuto() { timer = setInterval(() => goTo(current + 1), 4000); }
+    function stopAuto()  { clearInterval(timer); }
+
+    document.getElementById('prevBtn').addEventListener('click', () => { stopAuto(); goTo(current - 1); startAuto(); });
+    document.getElementById('nextBtn').addEventListener('click', () => { stopAuto(); goTo(current + 1); startAuto(); });
+
+    let touchX = 0;
+    track.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; stopAuto(); });
+    track.addEventListener('touchend',   e => { const diff = touchX - e.changedTouches[0].clientX; if (Math.abs(diff) > 40) goTo(current + (diff > 0 ? 1 : -1)); startAuto(); });
+    startAuto();
+
+    /* 滚动淡入 */
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+  </script>
 
 </body>
 </html>
