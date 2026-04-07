@@ -3,15 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ✏️ 网站标题 -->
   <title>Charlotte Liu · 刘赫熙</title>
+
+  <!-- 🔖 网站图标（CL 薄荷绿方块）
+       想换成图片就改成：<link rel="icon" type="image/png" href="favicon.png"> -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%23a8d8c8'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='22' font-weight='700' fill='%23fff' letter-spacing='1'>CL</text></svg>">
+
+  <!-- 字体：
+       Cormorant Garamond → 英文衬线（标题/签名用）
+       Noto Serif SC       → 中文衬线（刘赫熙用，比系统字体好看很多）
+       Jost                → 无衬线（正文用） -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+SC:wght@300;400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* 🎨 颜色变量 —— 改这里就能换整站配色 */
     :root {
       --mint:       #a8d8c8;
       --mint-light: #d6efe8;
@@ -22,8 +33,9 @@
       --ink-soft:   #6b8a7e;
       --cream:      #fafaf8;
       --white:      #ffffff;
-      --serif: 'Cormorant Garamond', Georgia, serif;
-      --sans:  'Jost', sans-serif;
+      --serif:      'Cormorant Garamond', Georgia, serif;
+      --serif-zh:   'Noto Serif SC', 'Songti SC', serif; /* ✏️ 中文衬线字体 */
+      --sans:       'Jost', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
@@ -37,13 +49,99 @@
       overflow-x: hidden;
     }
 
-    /* ── NAV ── */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       轮播（导航栏正下方，全宽）
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
+    /* 轮播容器：固定在导航栏下方，全宽
+       ✏️ 改 height 调整轮播高度，500px 适合横竖混合照片 */
+    .carousel {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      margin-top: 72px;       /* 和导航栏高度一致，避免被遮住 */
+      overflow: hidden;
+      background: var(--ink);
+    }
+
+    /* 滑动轨道：所有图片横向排列 */
+    .carousel-track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.77, 0, 0.18, 1);
+    }
+
+    /* 每张轮播图片 */
+    .carousel-slide {
+      flex: 0 0 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 横竖照片通用方案：
+       object-fit: cover    → 自动裁剪填满，不变形
+       object-position: center bottom → 焦点在下方，人像照显示下半身/全身更完整
+       ✏️ 如果某张照片焦点不对，可以单独给那张 <img> 加 style="object-position:center top" */
+    .carousel-slide img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center bottom;
+      display: block;
+    }
+
+    /* 顶部往下的渐变遮罩，让照片和导航栏过渡自然 */
+    .carousel-slide::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom,
+        rgba(26,38,33,0.25) 0%,
+        rgba(26,38,33,0.05) 40%,
+        rgba(26,38,33,0.05) 70%,
+        rgba(26,38,33,0.3) 100%);
+    }
+
+    /* 左右切换按钮 */
+    .carousel-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      z-index: 10;
+      width: 44px; height: 44px;
+      background: rgba(250,250,248,0.7);
+      border: none; border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+      backdrop-filter: blur(6px);
+    }
+    .carousel-btn:hover { background: rgba(168,216,200,0.85); }
+    .carousel-btn svg { width: 18px; height: 18px; stroke: var(--ink); fill: none; stroke-width: 2; stroke-linecap: round; }
+    .carousel-btn.prev { left: 1.5rem; }
+    .carousel-btn.next { right: 1.5rem; }
+
+    /* 底部小圆点指示器 */
+    .carousel-dots {
+      position: absolute; bottom: 1.2rem; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 0.5rem; z-index: 10;
+    }
+    .carousel-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      border: none; cursor: pointer; padding: 0;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .carousel-dot.active {
+      background: var(--white);
+      transform: scale(1.3);
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       导航栏
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
       z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 1.4rem 3rem;
-      background: rgba(250,250,248,0.85);
+      background: rgba(250,250,248,0.88);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(168,216,200,0.3);
     }
@@ -58,80 +156,98 @@
       color: var(--white);
       letter-spacing: 1px;
       text-decoration: none;
-      flex-shrink: 0;
     }
 
     .nav-links { display: flex; gap: 2.4rem; list-style: none; }
     .nav-links a {
-      font-family: var(--sans);
-      font-size: 0.8rem;
-      font-weight: 400;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink-mid);
-      text-decoration: none;
+      font-size: 0.8rem; font-weight: 400;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ink-mid); text-decoration: none;
       transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--mint-deep); }
 
-    /* ── HERO ── */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       Hero 区块（左文字 + 右照片）
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
     #home {
       min-height: 100vh;
       display: grid;
       grid-template-columns: 1fr 1fr;
       align-items: center;
-      padding-top: 80px;
     }
 
     .hero-text {
       padding: 5rem 3rem 5rem 5rem;
+      text-align: center;
+      display: flex; flex-direction: column; align-items: center;
     }
 
-    .hero-tag {
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--mint-deep);
-      margin-bottom: 1.5rem;
-      font-weight: 400;
+    /* ── 草书签名 SVG ── */
+    /* 原理：Dancing Script 字体做草书底，SVG path 做笔迹动画覆盖在上 */
+    .hero-name-svg-wrap {
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto 0.4rem;
     }
 
-    .hero-name-en {
-      font-family: var(--serif);
-      font-size: clamp(3.5rem, 6vw, 5.5rem);
-      font-weight: 300;
-      line-height: 1.05;
-      letter-spacing: -0.01em;
+    /* 草书英文名：用 Dancing Script 字体，流畅连笔感 */
+    /* ✏️ 如果想换字体，把 'Dancing Script' 换成其他草书字体名 */
+    .hero-name-cursive {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(3.8rem, 7vw, 6rem);
+      font-weight: 700;
       color: var(--ink);
+      line-height: 1.1;
+      letter-spacing: 0.01em;
+      opacity: 0;
+      animation: fade-up-in 1s ease forwards;
+      animation-delay: 0.2s;
     }
 
+    /* 草书字体需要单独引入 */
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
+    /* ✏️ 中文名：用 Noto Serif SC，优雅衬线感 */
     .hero-name-zh {
-      font-family: var(--serif);
-      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-family: var(--serif-zh);
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
       font-weight: 300;
       color: var(--mint-deep);
-      letter-spacing: 0.1em;
+      letter-spacing: 0.35em;  /* 中文字间距宽一点更好看 */
       margin-top: 0.3rem;
+      line-height: 1.2;
+      opacity: 0;
+      animation: fade-up-in 0.9s ease forwards;
+      animation-delay: 0.8s;
     }
 
+    /* 薄荷绿短横线 */
     .hero-divider {
       width: 48px; height: 1px;
       background: var(--mint);
-      margin: 2rem 0;
+      margin: 1.8rem 0;
+      opacity: 0;
+      animation: fade-up-in 0.7s ease forwards;
+      animation-delay: 1.2s;
     }
 
+    /* 身份介绍 */
     .hero-sub {
       font-size: 0.95rem;
       color: var(--ink-soft);
-      line-height: 1.8;
-      max-width: 340px;
+      line-height: 1.8; max-width: 340px;
+      text-align: center;
+      opacity: 0;
+      animation: fade-up-in 0.7s ease forwards;
+      animation-delay: 1.4s;
     }
-
     .hero-sub strong { color: var(--ink-mid); font-weight: 400; }
 
+    /* Learn more 按钮 */
     .hero-cta {
       display: inline-block;
-      margin-top: 2.5rem;
+      margin-top: 2.2rem;
       padding: 0.8rem 2rem;
       border: 1px solid var(--mint);
       color: var(--ink-mid);
@@ -141,282 +257,168 @@
       text-transform: uppercase;
       transition: all 0.25s;
       font-weight: 400;
+      opacity: 0;
+      animation: fade-up-in 0.7s ease forwards;
+      animation-delay: 1.6s;
     }
-    .hero-cta:hover {
-      background: var(--mint);
-      color: var(--white);
-    }
+    .hero-cta:hover { background: var(--mint); color: var(--white); }
 
+    /* 右边照片 */
     .hero-photo-wrap {
-      height: 100vh;
-      position: relative;
-      overflow: hidden;
+      height: 100vh; position: relative; overflow: hidden;
       background: var(--mint-pale);
     }
-
     .hero-photo-wrap::before {
-      content: '';
-      position: absolute; inset: 0;
+      content: ''; position: absolute; inset: 0;
       background: linear-gradient(135deg, var(--mint-light) 0%, var(--mint-pale) 100%);
     }
-
-    /* Photo placeholder — replace <div class="photo-placeholder"> with <img src="your-photo.jpg"> */
-    .photo-placeholder {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 1rem;
-    }
-
-    .photo-placeholder-icon {
-      width: 120px; height: 120px;
-      border-radius: 50%;
-      background: rgba(168,216,200,0.4);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .photo-placeholder-icon svg { opacity: 0.6; }
-
-    .photo-placeholder-text {
-      font-size: 0.8rem;
-      color: var(--ink-soft);
-      letter-spacing: 0.08em;
-      text-align: center;
-      line-height: 1.6;
-    }
-
     .hero-photo-wrap img {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
       object-position: center top;
     }
-
-    /* decorative mint blob */
     .blob {
-      position: absolute;
-      bottom: -60px; left: -60px;
-      width: 280px; height: 280px;
-      border-radius: 50%;
+      position: absolute; bottom: -60px; left: -60px;
+      width: 280px; height: 280px; border-radius: 50%;
       background: rgba(168,216,200,0.25);
-      filter: blur(40px);
-      pointer-events: none;
+      filter: blur(40px); pointer-events: none;
     }
 
-    /* ── SECTION BASE ── */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       通用 Section
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
     section { padding: 6rem 0; }
-
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 3rem;
-    }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 3rem; }
 
     .section-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--mint-deep);
-      margin-bottom: 1rem;
-      font-weight: 400;
+      font-size: 0.72rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--mint-deep);
+      margin-bottom: 1rem; font-weight: 400;
     }
-
     .section-title {
       font-family: var(--serif);
       font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 300;
-      color: var(--ink);
-      line-height: 1.1;
-      margin-bottom: 3rem;
+      font-weight: 300; color: var(--ink);
+      line-height: 1.1; margin-bottom: 3rem;
     }
 
-    /* ── ABOUT ── */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       About
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
     #about { background: var(--white); }
-
     .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 4rem;
-      align-items: start;
+      display: grid; grid-template-columns: 1fr 2fr;
+      gap: 4rem; align-items: start;
     }
-
-    .about-sidebar {}
-
-    .about-photo-small {
-      width: 100%;
-      aspect-ratio: 3/4;
-      background: var(--mint-pale);
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 1.5rem;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--ink-soft);
-      font-size: 0.75rem;
-      text-align: center;
-    }
-
-    .about-photo-small img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-    }
-
     .about-info { display: flex; flex-direction: column; gap: 0.6rem; }
     .about-info-item { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.5; }
-    .about-info-item strong { color: var(--ink-mid); font-weight: 400; display: block; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
-
+    .about-info-item strong {
+      color: var(--ink-mid); font-weight: 400; display: block;
+      font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+    }
     .about-content p {
-      font-size: 1.05rem;
-      line-height: 1.9;
-      color: var(--ink-mid);
-      margin-bottom: 1.4rem;
+      font-size: 1.05rem; line-height: 1.9;
+      color: var(--ink-mid); margin-bottom: 1.4rem;
     }
-
     .about-content p:last-child { margin-bottom: 0; }
-
-    .interests-list {
-      display: flex; flex-wrap: wrap; gap: 0.6rem;
-      margin-top: 2rem;
-    }
-
+    .interests-list { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2rem; }
     .interest-tag {
       padding: 0.35rem 1rem;
-      background: var(--mint-pale);
-      border: 1px solid var(--mint-light);
-      border-radius: 2px;
-      font-size: 0.8rem;
-      color: var(--ink-mid);
-      letter-spacing: 0.05em;
+      background: var(--mint-pale); border: 1px solid var(--mint-light);
+      border-radius: 2px; font-size: 0.8rem;
+      color: var(--ink-mid); letter-spacing: 0.05em;
     }
 
-    /* ── CV ── */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       CV
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
     #cv { background: var(--cream); }
-
     .cv-download {
       display: inline-flex; align-items: center; gap: 0.5rem;
-      margin-bottom: 3rem;
-      padding: 0.7rem 1.6rem;
-      background: var(--mint);
-      color: var(--white);
-      text-decoration: none;
-      font-size: 0.8rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      transition: background 0.2s;
-      font-weight: 400;
+      margin-bottom: 3rem; padding: 0.7rem 1.6rem;
+      background: var(--mint); color: var(--white);
+      text-decoration: none; font-size: 0.8rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      transition: background 0.2s; font-weight: 400;
     }
     .cv-download:hover { background: var(--mint-deep); }
-
     .cv-section { margin-bottom: 3.5rem; }
-
     .cv-section-title {
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--mint-deep);
+      font-size: 0.72rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--mint-deep);
       border-bottom: 1px solid var(--mint-light);
-      padding-bottom: 0.6rem;
-      margin-bottom: 1.8rem;
-      font-weight: 400;
+      padding-bottom: 0.6rem; margin-bottom: 1.8rem; font-weight: 400;
     }
-
     .cv-entry {
-      display: grid;
-      grid-template-columns: 140px 1fr;
-      gap: 0 2rem;
-      margin-bottom: 1.8rem;
+      display: grid; grid-template-columns: 140px 1fr;
+      gap: 0 2rem; margin-bottom: 1.8rem;
     }
+    .cv-year { font-size: 0.8rem; color: var(--ink-soft); padding-top: 0.15rem; line-height: 1.5; }
+    .cv-entry-title { font-size: 1rem; font-weight: 400; color: var(--ink); margin-bottom: 0.15rem; }
+    .cv-entry-sub { font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 0.3rem; }
+    .cv-entry-desc { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.7; }
 
-    .cv-year {
-      font-size: 0.8rem;
-      color: var(--ink-soft);
-      padding-top: 0.15rem;
-      line-height: 1.5;
-    }
-
-    .cv-entry-main {}
-    .cv-entry-title {
-      font-size: 1rem;
-      font-weight: 400;
-      color: var(--ink);
-      margin-bottom: 0.15rem;
-    }
-    .cv-entry-sub {
-      font-size: 0.85rem;
-      color: var(--ink-soft);
-      margin-bottom: 0.3rem;
-    }
-    .cv-entry-desc {
-      font-size: 0.85rem;
-      color: var(--ink-soft);
-      line-height: 1.7;
-    }
-
-    /* ── CONTACT ── */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       Contact
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
     #contact { background: var(--mint-pale); border-top: 1px solid var(--mint-light); }
-
-    .contact-inner {
-      display: flex; gap: 4rem; align-items: flex-start;
-    }
-
-    .contact-left { flex: 1; }
-
+    .contact-inner { display: flex; gap: 4rem; align-items: flex-start; }
     .contact-links { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
     .contact-link {
       display: flex; align-items: center; gap: 0.8rem;
       font-size: 0.9rem; color: var(--ink-mid);
-      text-decoration: none;
-      transition: color 0.2s;
+      text-decoration: none; transition: color 0.2s;
     }
     .contact-link:hover { color: var(--mint-deep); }
     .contact-link-icon {
-      width: 32px; height: 32px;
-      background: var(--mint-light);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      width: 32px; height: 32px; background: var(--mint-light);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
     }
     .contact-link-icon svg { width: 14px; height: 14px; stroke: var(--ink-mid); }
 
+    /* ✏️ 右边引用句子 */
     .contact-note {
       flex: 0 0 280px;
       font-family: var(--serif);
-      font-size: 1.4rem;
-      font-weight: 300;
-      font-style: italic;
-      color: var(--ink-soft);
-      line-height: 1.7;
-      padding-top: 0.5rem;
+      font-size: 1.35rem; font-weight: 300; font-style: italic;
+      color: var(--ink-soft); line-height: 1.7; padding-top: 0.5rem;
     }
 
-    /* ── FOOTER ── */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       页脚
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
     footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.75rem;
-      color: var(--ink-soft);
-      letter-spacing: 0.08em;
-      border-top: 1px solid var(--mint-light);
+      text-align: center; padding: 2rem;
+      font-size: 0.75rem; color: var(--ink-soft);
+      letter-spacing: 0.08em; border-top: 1px solid var(--mint-light);
     }
 
-    /* ── ANIMATIONS ── */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       通用动画
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
+    @keyframes fade-up-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
     .fade-in {
-      opacity: 0;
-      transform: translateY(20px);
+      opacity: 0; transform: translateY(20px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
-    .fade-in.visible {
-      opacity: 1;
-      transform: none;
-    }
+    .fade-in.visible { opacity: 1; transform: none; }
 
-    /* ── RESPONSIVE ── */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       手机端适配
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
     @media (max-width: 768px) {
       nav { padding: 1rem 1.5rem; }
+      .carousel { height: 240px; }
       #home { grid-template-columns: 1fr; }
-      .hero-text { padding: 2rem 1.5rem; padding-top: 6rem; }
-      .hero-photo-wrap { height: 60vw; }
+      .hero-text { padding: 2.5rem 1.5rem; }
+      .hero-photo-wrap { height: 55vw; }
       .container { padding: 0 1.5rem; }
       .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-      .about-photo-small { aspect-ratio: 1/1; }
       .cv-entry { grid-template-columns: 1fr; gap: 0.2rem; }
       .contact-inner { flex-direction: column; gap: 2rem; }
       .contact-note { flex: none; }
@@ -425,9 +427,12 @@
 </head>
 <body>
 
-  <!-- NAV -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━
+       导航栏
+  ━━━━━━━━━━━━━━━━━━━━━━━━ -->
   <nav>
     <a href="#home" class="nav-logo">CL</a>
+    <!-- ✏️ 想加导航项就复制一行 <li> -->
     <ul class="nav-links">
       <li><a href="#home">Home</a></li>
       <li><a href="#about">About</a></li>
@@ -436,41 +441,90 @@
     </ul>
   </nav>
 
-  <!-- HERO -->
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━
+       全宽轮播（导航栏下方）
+  ━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- ✏️ 轮播使用说明：
+       1. 把你的照片上传到 GitHub（和 index.html 同一个文件夹）
+       2. 把下面每个 <img src="..."> 里的文件名改成你的照片名
+       3. 想加更多照片就复制一个 <div class="carousel-slide">...</div>
+       4. 想删照片就删掉对应的 <div class="carousel-slide">...</div>
+       注意：横版照片（风景/活动照）在轮播里效果最好！ -->
+  <div class="carousel" id="mainCarousel">
+    <div class="carousel-track" id="carouselTrack">
+
+      <!-- ✏️ 第1张照片 -->
+      <div class="carousel-slide">
+        <img src="slide1.jpg" alt="Photo 1">
+      </div>
+
+      <!-- ✏️ 第2张照片 -->
+      <div class="carousel-slide">
+        <img src="slide2.jpg" alt="Photo 2">
+      </div>
+
+      <!-- ✏️ 第3张照片 -->
+      <div class="carousel-slide">
+        <img src="slide3.jpg" alt="Photo 3">
+      </div>
+
+      <!-- ✏️ 想加第4张：复制上面整个 <div class="carousel-slide">...</div> 粘贴在这里 -->
+
+    </div>
+
+    <!-- 左右按钮 -->
+    <button class="carousel-btn prev" id="prevBtn" aria-label="上一张">
+      <svg viewBox="0 0 18 18"><polyline points="11 4 6 9 11 14"/></svg>
+    </button>
+    <button class="carousel-btn next" id="nextBtn" aria-label="下一张">
+      <svg viewBox="0 0 18 18"><polyline points="7 4 12 9 7 14"/></svg>
+    </button>
+
+    <!-- 底部小圆点（自动生成，不需要改） -->
+    <div class="carousel-dots" id="carouselDots"></div>
+  </div>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━
+       Hero 区块
+  ━━━━━━━━━━━━━━━━━━━━━━━━ -->
   <section id="home">
-    <div class="hero-text fade-in">
-      <p class="hero-tag">Academic Portfolio</p>
-      <h1 class="hero-name-en">Charlotte Liu</h1>
+    <div class="hero-text">
+
+      <!-- 草书签名：Dancing Script 字体，流畅连笔风格
+           ✏️ 想改名字就直接改文字 -->
+      <div class="hero-name-svg-wrap">
+        <p class="hero-name-cursive">Charlotte Liu</p>
+      </div>
+
+      <!-- ✏️ 中文名：Noto Serif SC 衬线字体，字间距宽 -->
       <p class="hero-name-zh">刘赫熙</p>
+
       <div class="hero-divider"></div>
+
+      <!-- ✏️ 身份介绍 -->
       <p class="hero-sub">
         <strong>Undergraduate Researcher</strong><br>
         Molecular and Cell Biology<br>
         University of California, San Diego
       </p>
+
+      <!-- ✏️ 按钮，点击跳到 About -->
       <a href="#about" class="hero-cta">Learn more</a>
     </div>
 
+    <!-- ✏️ 右边照片，文件名改成你的照片 -->
     <div class="hero-photo-wrap">
-      <!-- 
-        把下面这个 div 换成 <img src="your-photo.jpg" alt="Charlotte Liu"> 就会显示你的照片！
-      -->
-      <div class="photo-placeholder">
-        <div class="photo-placeholder-icon">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#6db8a0" stroke-width="1.5">
-            <circle cx="24" cy="18" r="8"/>
-            <path d="M8 40c0-8.8 7.2-16 16-16s16 7.2 16 16"/>
-          </svg>
-        </div>
-        <p class="photo-placeholder-text">
-          将 &lt;img src="your-photo.jpg"&gt;<br>替换这个区块即可显示照片
-        </p>
-      </div>
+      <img src="photo.jpg" alt="Charlotte Liu">
       <div class="blob"></div>
     </div>
   </section>
 
-  <!-- ABOUT -->
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━
+       About
+  ━━━━━━━━━━━━━━━━━━━━━━━━ -->
   <section id="about">
     <div class="container">
       <p class="section-label fade-in">About me</p>
@@ -478,46 +532,37 @@
 
       <div class="about-grid fade-in">
         <div class="about-sidebar">
-          <!-- 同上，换成 <img> 显示照片 -->
-          <div class="about-photo-small">
-            <span style="font-size:0.75rem; color:var(--ink-soft); text-align:center; padding:1rem;">
-              Photo<br>placeholder
-            </span>
-          </div>
-          <div class="about-info">
+          <!-- ✏️ About 小照片，同 photo.jpg -->
+          <img src="photo.jpg" alt="Charlotte Liu"
+               style="width:100%;display:block;aspect-ratio:3/4;object-fit:cover;border-radius:4px;">
+          <div class="about-info" style="margin-top:1.5rem;">
             <div class="about-info-item">
-              <strong>Affiliation</strong>
-              UC San Diego
+              <strong>Affiliation</strong>UC San Diego
             </div>
             <div class="about-info-item">
-              <strong>Major</strong>
-              Molecular and Cell Biology
+              <strong>Major</strong>Molecular and Cell Biology
             </div>
             <div class="about-info-item">
               <strong>Email</strong>
-              <!-- 改成你的邮箱 -->
-              your@ucsd.edu
+              <!-- ✏️ 改成你的邮箱 -->
+              hel061@ucsd.edu
             </div>
           </div>
         </div>
 
         <div class="about-content">
-          <p>
-            Hi! I'm Charlotte Liu (刘赫熙), an undergraduate student at the University of California, San Diego, majoring in Molecular and Cell Biology.
-          </p>
-          <p>
-            <!-- 在这里填写你自己的介绍！ -->
-            I am passionate about understanding life at the molecular level — from how cells communicate to the mechanisms underlying disease. My academic journey has given me a deep appreciation for the elegance of biological systems and the power of experimental science.
-          </p>
-          <p>
-            Outside of the lab, I enjoy [your hobbies here]. I believe that curiosity, creativity, and collaboration are the driving forces of great science.
-          </p>
+          <!-- ✏️ 第一段 -->
+          <p>Hi! I'm Charlotte Liu (刘赫熙), an undergraduate student at the University of California, San Diego, class of 2029. I major in Molecular and Cell Biology with a minor in Bioethics. I grew up in Shunde, Guangdong, China. My name Hexi (赫熙) is pronounced "Huh-see" — feel free to call me Charlotte! </p>
+          <!-- ✏️ 第二段：研究兴趣 -->
+          <p>I am passionate about understanding life at the molecular level. My academic journey has given me a deep appreciation for the elegance of biological systems and the power of experimental science.</p>
+          <!-- ✏️ 第三段：课外爱好 -->
+          <p>Outside of the academic, I find joy in ballet, figure skaing, and playing the pipa(琵琶). I am a collorator in nature and I always believe in win-win solutions. </p>
 
+          <!-- ✏️ 兴趣标签：复制 <span> 加标签，删掉 <span> 删标签 -->
           <div class="interests-list">
-            <!-- 改成你自己感兴趣的方向 -->
             <span class="interest-tag">Cell Biology</span>
             <span class="interest-tag">Molecular Biology</span>
-            <span class="interest-tag">Biochemistry</span>
+            <span class="interest-tag">Bioinformatics</span>
             <span class="interest-tag">Research</span>
             <span class="interest-tag">Science Communication</span>
           </div>
@@ -526,22 +571,24 @@
     </div>
   </section>
 
-  <!-- CV -->
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━
+       CV
+  ━━━━━━━━━━━━━━━━━━━━━━━━ -->
   <section id="cv">
     <div class="container">
       <p class="section-label fade-in">Curriculum Vitae</p>
       <h2 class="section-title fade-in">My CV</h2>
 
-      <!-- 如果你有 PDF 版 CV，把 # 换成文件路径 -->
+      <!-- ✏️ PDF 按钮：把 cv.pdf 换成你的文件名，没有就删掉这行 -->
       <a href="cv.pdf" class="cv-download fade-in" target="_blank">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1v8M4 6l3 3 3-3M2 11h10"/></svg>
         Download PDF
       </a>
 
-      <!-- EDUCATION -->
+      <!-- ✏️ Education：复制 cv-entry 加条目 -->
       <div class="cv-section fade-in">
         <h3 class="cv-section-title">Education</h3>
-
         <div class="cv-entry">
           <div class="cv-year">2022 – Present</div>
           <div class="cv-entry-main">
@@ -552,10 +599,9 @@
         </div>
       </div>
 
-      <!-- RESEARCH -->
+      <!-- ✏️ Research Experience -->
       <div class="cv-section fade-in">
         <h3 class="cv-section-title">Research Experience</h3>
-
         <div class="cv-entry">
           <div class="cv-year">20XX – Present</div>
           <div class="cv-entry-main">
@@ -564,7 +610,6 @@
             <p class="cv-entry-desc">Brief description of your research project and key contributions.</p>
           </div>
         </div>
-
         <div class="cv-entry">
           <div class="cv-year">20XX – 20XX</div>
           <div class="cv-entry-main">
@@ -575,10 +620,9 @@
         </div>
       </div>
 
-      <!-- PUBLICATIONS / PRESENTATIONS -->
+      <!-- ✏️ Publications：没有就删掉整个 cv-section -->
       <div class="cv-section fade-in">
         <h3 class="cv-section-title">Publications & Presentations</h3>
-
         <div class="cv-entry">
           <div class="cv-year">20XX</div>
           <div class="cv-entry-main">
@@ -588,10 +632,9 @@
         </div>
       </div>
 
-      <!-- HONORS -->
+      <!-- ✏️ Honors -->
       <div class="cv-section fade-in">
         <h3 class="cv-section-title">Honors & Awards</h3>
-
         <div class="cv-entry">
           <div class="cv-year">20XX</div>
           <div class="cv-entry-main">
@@ -601,7 +644,7 @@
         </div>
       </div>
 
-      <!-- SKILLS -->
+      <!-- ✏️ Skills：复制 <span> 加技能 -->
       <div class="cv-section fade-in">
         <h3 class="cv-section-title">Skills & Techniques</h3>
         <div class="interests-list">
@@ -610,13 +653,15 @@
           <span class="interest-tag">Western Blot</span>
           <span class="interest-tag">Microscopy</span>
           <span class="interest-tag">Python</span>
-          <!-- 加上你自己的技能 -->
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CONTACT -->
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━
+       Contact
+  ━━━━━━━━━━━━━━━━━━━━━━━━ -->
   <section id="contact">
     <div class="container">
       <p class="section-label fade-in">Get in touch</p>
@@ -625,18 +670,21 @@
       <div class="contact-inner fade-in">
         <div class="contact-left">
           <div class="contact-links">
+            <!-- ✏️ 邮箱：两处都改 -->
             <a href="mailto:your@ucsd.edu" class="contact-link">
               <div class="contact-link-icon">
                 <svg viewBox="0 0 16 16" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 4.5l7 4.5 7-4.5"/></svg>
               </div>
               your@ucsd.edu
             </a>
+            <!-- ✏️ LinkedIn：改 yourprofile，没有就删掉 -->
             <a href="https://linkedin.com/in/yourprofile" target="_blank" class="contact-link">
               <div class="contact-link-icon">
                 <svg viewBox="0 0 16 16" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="1" width="14" height="14" rx="2"/><path d="M5 7v4M5 5v.01M8 11V8.5C8 7.7 8.7 7 9.5 7s1.5.7 1.5 1.5V11"/></svg>
               </div>
               LinkedIn
             </a>
+            <!-- ✏️ GitHub：改 yourusername，没有就删掉 -->
             <a href="https://github.com/yourusername" target="_blank" class="contact-link">
               <div class="contact-link-icon">
                 <svg viewBox="0 0 16 16" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11.5c-3 1-3-1.5-4-2m8 4v-2.8a2.4 2.4 0 0 0-.7-1.8c2.4-.3 4.7-1.2 4.7-5a3.9 3.9 0 0 0-1-2.7 3.6 3.6 0 0 0-.1-2.6s-.8-.3-2.7 1a9.3 9.3 0 0 0-5 0C3.8.9 3 1.2 3 1.2a3.6 3.6 0 0 0-.1 2.6 3.9 3.9 0 0 0-1 2.7c0 3.8 2.3 4.7 4.7 5a2.4 2.4 0 0 0-.7 1.8V15"/></svg>
@@ -645,28 +693,85 @@
             </a>
           </div>
         </div>
+
+        <!-- ✏️ 引用句子：中英双语 -->
         <p class="contact-note">
-          "Science is not only a disciple of reason but also one of romance and passion."
+          "路虽远，心之将至"<br>
+          <span style="font-size:1rem; letter-spacing:0.03em; opacity:0.75;">
+            "The road is long, but the heart will find its way."
+          </span>
         </p>
       </div>
     </div>
   </section>
 
+
+  <!-- ✏️ 页脚年份 -->
   <footer>
-    © 2024 Charlotte Liu · 刘赫熙 &nbsp;·&nbsp; Built with care
+    © 2026 Charlotte Liu · 刘赫熙 &nbsp;·&nbsp; Built with care
   </footer>
 
+
   <script>
-    // Fade-in on scroll
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       轮播逻辑（不需要改动）
+       原理：记录当前第几张（currentIndex），
+             点击按钮时改变 index，
+             用 CSS transform: translateX 移动整条轨道
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
+    const track   = document.getElementById('carouselTrack');
+    const slides  = track.querySelectorAll('.carousel-slide');
+    const dotsWrap = document.getElementById('carouselDots');
+    const total   = slides.length;
+    let current   = 0;
+    let timer;
+
+    /* 生成小圆点 */
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(dot);
+    });
+
+    /* 跳到第 n 张 */
+    function goTo(n) {
+      current = (n + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dotsWrap.querySelectorAll('.carousel-dot').forEach((d, i) =>
+        d.classList.toggle('active', i === current)
+      );
+    }
+
+    /* 自动播放：每 4 秒切换一张（✏️ 改数字调速度，单位毫秒） */
+    function startAuto() { timer = setInterval(() => goTo(current + 1), 4000); }
+    function stopAuto()  { clearInterval(timer); }
+
+    document.getElementById('prevBtn').addEventListener('click', () => { stopAuto(); goTo(current - 1); startAuto(); });
+    document.getElementById('nextBtn').addEventListener('click', () => { stopAuto(); goTo(current + 1); startAuto(); });
+
+    /* 触摸滑动支持（手机端） */
+    let touchX = 0;
+    track.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; stopAuto(); });
+    track.addEventListener('touchend',   e => {
+      const diff = touchX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) goTo(current + (diff > 0 ? 1 : -1));
+      startAuto();
+    });
+
+    startAuto();
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━
+       滚动淡入（不需要改动）
+    ━━━━━━━━━━━━━━━━━━━━━━━━ */
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((e, i) => {
-        if (e.isIntersecting) {
+        if (e.isIntersecting)
           setTimeout(() => e.target.classList.add('visible'), i * 80);
-        }
       });
     }, { threshold: 0.1 });
-
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
   </script>
+
 </body>
 </html>
