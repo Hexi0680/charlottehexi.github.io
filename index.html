@@ -52,13 +52,11 @@
     /* ━━━━━━━━━━━━━━━━━━━━━━━━
        轮播（导航栏正下方，全宽）
     ━━━━━━━━━━━━━━━━━━━━━━━━ */
-    /* 轮播容器：固定在导航栏下方，全宽
-       ✏️ 改 height 调整轮播高度，500px 适合横竖混合照片 */
+    /* ✏️ 改 height 调整轮播高度 */
     .carousel {
       position: relative;
       width: 100%;
       height: 500px;
-      margin-top: 72px;       /* 和导航栏高度一致，避免被遮住 */
       overflow: hidden;
       background: var(--ink);
     }
@@ -175,6 +173,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       align-items: center;
+      padding-top: 72px; /* 留出导航栏高度 */
     }
 
     .hero-text {
@@ -442,48 +441,7 @@
   </nav>
 
 
-  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━
-       全宽轮播（导航栏下方）
-  ━━━━━━━━━━━━━━━━━━━━━━━━ -->
-  <!-- ✏️ 轮播使用说明：
-       1. 把你的照片上传到 GitHub（和 index.html 同一个文件夹）
-       2. 把下面每个 <img src="..."> 里的文件名改成你的照片名
-       3. 想加更多照片就复制一个 <div class="carousel-slide">...</div>
-       4. 想删照片就删掉对应的 <div class="carousel-slide">...</div>
-       注意：横版照片（风景/活动照）在轮播里效果最好！ -->
-  <div class="carousel" id="mainCarousel">
-    <div class="carousel-track" id="carouselTrack">
 
-      <!-- ✏️ 第1张照片 -->
-      <div class="carousel-slide">
-        <img src="slide1.jpg" alt="Photo 1">
-      </div>
-
-      <!-- ✏️ 第2张照片 -->
-      <div class="carousel-slide">
-        <img src="slide2.jpg" alt="Photo 2">
-      </div>
-
-      <!-- ✏️ 第3张照片 -->
-      <div class="carousel-slide">
-        <img src="slide3.jpg" alt="Photo 3">
-      </div>
-
-      <!-- ✏️ 想加第4张：复制上面整个 <div class="carousel-slide">...</div> 粘贴在这里 -->
-
-    </div>
-
-    <!-- 左右按钮 -->
-    <button class="carousel-btn prev" id="prevBtn" aria-label="上一张">
-      <svg viewBox="0 0 18 18"><polyline points="11 4 6 9 11 14"/></svg>
-    </button>
-    <button class="carousel-btn next" id="nextBtn" aria-label="下一张">
-      <svg viewBox="0 0 18 18"><polyline points="7 4 12 9 7 14"/></svg>
-    </button>
-
-    <!-- 底部小圆点（自动生成，不需要改） -->
-    <div class="carousel-dots" id="carouselDots"></div>
-  </div>
 
 
   <!-- ━━━━━━━━━━━━━━━━━━━━━━━━
@@ -545,24 +503,24 @@
             <div class="about-info-item">
               <strong>Email</strong>
               <!-- ✏️ 改成你的邮箱 -->
-              hel061@ucsd.edu
+              <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ff86908a8dbf8a9c8c9bd19a9b8a">[email&#160;protected]</a>
             </div>
           </div>
         </div>
 
         <div class="about-content">
           <!-- ✏️ 第一段 -->
-          <p>Hi! I'm Charlotte Liu (刘赫熙), an undergraduate student at the University of California, San Diego, class of 2029. I major in Molecular and Cell Biology with a minor in Bioethics. I grew up in Shunde, Guangdong, China. My name Hexi (赫熙) is pronounced "Huh-see" — feel free to call me Charlotte! </p>
+          <p>Hi! I'm Charlotte Liu (刘赫熙), an undergraduate student at the University of California, San Diego, majoring in Molecular and Cell Biology.</p>
           <!-- ✏️ 第二段：研究兴趣 -->
-          <p>I am passionate about understanding life at the molecular level. My academic journey has given me a deep appreciation for the elegance of biological systems and the power of experimental science.</p>
+          <p>I am passionate about understanding life at the molecular level — from how cells communicate to the mechanisms underlying disease. My academic journey has given me a deep appreciation for the elegance of biological systems and the power of experimental science.</p>
           <!-- ✏️ 第三段：课外爱好 -->
-          <p>Outside of the academic, I find joy in ballet, figure skaing, and playing the pipa(琵琶). I am a collorator in nature and I always believe in win-win solutions. </p>
+          <p>Outside of the lab, I enjoy [your hobbies here]. I believe that curiosity, creativity, and collaboration are the driving forces of great science.</p>
 
           <!-- ✏️ 兴趣标签：复制 <span> 加标签，删掉 <span> 删标签 -->
           <div class="interests-list">
             <span class="interest-tag">Cell Biology</span>
             <span class="interest-tag">Molecular Biology</span>
-            <span class="interest-tag">Bioinformatics</span>
+            <span class="interest-tag">Biochemistry</span>
             <span class="interest-tag">Research</span>
             <span class="interest-tag">Science Communication</span>
           </div>
@@ -660,6 +618,48 @@
 
 
   <!-- ━━━━━━━━━━━━━━━━━━━━━━━━
+       照片轮播（CV 和 Contact 之间）
+       ✏️ 使用说明：
+       1. 把照片上传到 GitHub（和 index.html 同一个文件夹）
+       2. 把 <img src="..."> 里的文件名改成你的照片名
+       3. 复制 <div class="carousel-slide"> 可以加更多照片
+  ━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div class="carousel" id="mainCarousel">
+    <div class="carousel-track" id="carouselTrack">
+
+      <!-- ✏️ 第1张照片 -->
+      <div class="carousel-slide">
+        <img src="slide1.jpg" alt="Photo 1">
+      </div>
+
+      <!-- ✏️ 第2张照片 -->
+      <div class="carousel-slide">
+        <img src="slide2.jpg" alt="Photo 2">
+      </div>
+
+      <!-- ✏️ 第3张照片 -->
+      <div class="carousel-slide">
+        <img src="slide3.jpg" alt="Photo 3">
+      </div>
+
+      <!-- ✏️ 想加第4张：复制上面整个 <div class="carousel-slide">...</div> 粘贴在这里 -->
+
+    </div>
+
+    <!-- 左右按钮 -->
+    <button class="carousel-btn prev" id="prevBtn" aria-label="上一张">
+      <svg viewBox="0 0 18 18"><polyline points="11 4 6 9 11 14"/></svg>
+    </button>
+    <button class="carousel-btn next" id="nextBtn" aria-label="下一张">
+      <svg viewBox="0 0 18 18"><polyline points="7 4 12 9 7 14"/></svg>
+    </button>
+
+    <!-- 底部小圆点（自动生成） -->
+    <div class="carousel-dots" id="carouselDots"></div>
+  </div>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━
        Contact
   ━━━━━━━━━━━━━━━━━━━━━━━━ -->
   <section id="contact">
@@ -671,11 +671,11 @@
         <div class="contact-left">
           <div class="contact-links">
             <!-- ✏️ 邮箱：两处都改 -->
-            <a href="mailto:your@ucsd.edu" class="contact-link">
+            <a href="/cdn-cgi/l/email-protection#6b12041e192b1e08180f450e0f1e" class="contact-link">
               <div class="contact-link-icon">
                 <svg viewBox="0 0 16 16" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 4.5l7 4.5 7-4.5"/></svg>
               </div>
-              your@ucsd.edu
+              <span class="__cf_email__" data-cfemail="f68f998384b683958592d8939283">[email&#160;protected]</span>
             </a>
             <!-- ✏️ LinkedIn：改 yourprofile，没有就删掉 -->
             <a href="https://linkedin.com/in/yourprofile" target="_blank" class="contact-link">
@@ -694,12 +694,9 @@
           </div>
         </div>
 
-        <!-- ✏️ 引用句子：中英双语 -->
+        <!-- ✏️ 引用句子 -->
         <p class="contact-note">
-          "路虽远，心之将至"<br>
-          <span style="font-size:1rem; letter-spacing:0.03em; opacity:0.75;">
-            "The road is long, but the heart will find its way."
-          </span>
+          「路虽远，心之将至」
         </p>
       </div>
     </div>
@@ -712,7 +709,7 @@
   </footer>
 
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     /* ━━━━━━━━━━━━━━━━━━━━━━━━
        轮播逻辑（不需要改动）
        原理：记录当前第几张（currentIndex），
@@ -763,15 +760,4 @@
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━
        滚动淡入（不需要改动）
-    ━━━━━━━━━━━━━━━━━━━━━━━━ */
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((e, i) => {
-        if (e.isIntersecting)
-          setTimeout(() => e.target.classList.add('visible'), i * 80);
-      });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-  </script>
-
-</body>
-</html>
+    ━━━━━━━━━━━━━━━━━━━━━━━�
