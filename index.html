@@ -8,36 +8,26 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+SC:wght@300;400&family=Jost:wght@300;400;500&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
-
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    /* 🎨 颜色 */
     :root {
-      --mint:       #a8d8c8;
-      --mint-light: #d6efe8;
-      --mint-pale:  #f0faf6;
-      --mint-deep:  #6db8a0;
-      --ink:        #1a2621;
-      --ink-mid:    #3d5249;
-      --ink-soft:   #6b8a7e;
-      --cream:      #fafaf8;
-      --white:      #ffffff;
-      --serif:      'Cormorant Garamond', Georgia, serif;
-      --serif-zh:   'Noto Serif SC', serif;
-      --sans:       'Jost', sans-serif;
-      --cursive:    'Dancing Script', cursive;
+      --mint: #a8d8c8; --mint-light: #d6efe8; --mint-pale: #f0faf6;
+      --mint-deep: #6db8a0; --ink: #1a2621; --ink-mid: #3d5249;
+      --ink-soft: #6b8a7e; --cream: #fafaf8; --white: #ffffff;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --serif-zh: 'Noto Serif SC', serif;
+      --sans: 'Jost', sans-serif;
+      --cursive: 'Dancing Script', cursive;
     }
-
     html { scroll-behavior: smooth; }
     body { font-family: var(--sans); background: var(--cream); color: var(--ink); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
 
-    /* ━━ 导航栏 ━━ */
+    /* 导航栏 */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 1.4rem 3rem;
-      background: rgba(250,250,248,0.88); backdrop-filter: blur(12px);
+      background: rgba(250,250,248,0.92); backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(168,216,200,0.3);
     }
     .nav-logo {
@@ -46,7 +36,6 @@
       font-family: var(--serif); font-size: 15px; font-weight: 600;
       color: var(--white); letter-spacing: 1px; text-decoration: none;
     }
-    /* ✏️ 导航链接：复制 <li> 加新项目 */
     .nav-links { display: flex; gap: 2.4rem; list-style: none; }
     .nav-links a {
       font-size: 0.8rem; font-weight: 400; letter-spacing: 0.12em;
@@ -54,28 +43,22 @@
     }
     .nav-links a:hover { color: var(--mint-deep); }
 
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━
-       轮播（页面最顶部，导航栏正下方）
-       ✏️ 改 height 调整高度
-    ━━━━━━━━━━━━━━━━━━━━━━━━ */
+    /* 轮播 - 导航栏正下方 */
     .carousel {
       position: relative; width: 100%; height: 520px;
-      margin-top: 72px; /* 导航栏高度，不要改 */
-      overflow: hidden; background: var(--ink);
+      margin-top: 72px; overflow: hidden; background: var(--ink);
     }
     .carousel-track { display: flex; height: 100%; transition: transform 0.6s cubic-bezier(0.77,0,0.18,1); }
-    .carousel-slide { flex: 0 0 100%; height: 100%; position: relative; overflow: hidden; }
-    /* ✏️ 照片裁剪焦点：center top / center center / center bottom */
+    .carousel-slide { flex: 0 0 100%; height: 100%; overflow: hidden; }
     .carousel-slide img { width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block; }
-    .carousel-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(26,38,33,0.1) 0%, rgba(26,38,33,0.03) 50%, rgba(26,38,33,0.15) 100%); }
     .carousel-btn {
       position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
-      width: 44px; height: 44px; background: rgba(250,250,248,0.7);
+      width: 44px; height: 44px; background: rgba(250,250,248,0.75);
       border: none; border-radius: 50%; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: background 0.2s; backdrop-filter: blur(6px);
     }
-    .carousel-btn:hover { background: rgba(168,216,200,0.85); }
+    .carousel-btn:hover { background: rgba(168,216,200,0.9); }
     .carousel-btn svg { width: 18px; height: 18px; stroke: var(--ink); fill: none; stroke-width: 2; stroke-linecap: round; }
     .carousel-btn.prev { left: 1.5rem; }
     .carousel-btn.next { right: 1.5rem; }
@@ -83,125 +66,104 @@
     .carousel-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); border: none; cursor: pointer; padding: 0; transition: background 0.3s, transform 0.3s; }
     .carousel-dot.active { background: var(--white); transform: scale(1.3); }
 
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━
-       주页（全屏居中名字）
-    ━━━━━━━━━━━━━━━━━━━━━━━━ */
+    /* 主页 - 全屏居中名字 */
     #home {
       min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center; background: var(--cream);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; background: var(--cream); padding: 2rem;
     }
 
-    /* ✏️ 英文草书签名
-       动画在页面加载时触发，不依赖滚动位置 */
+    /* 英文草书签名动画 */
     .hero-name-cursive {
       font-family: var(--cursive);
-      font-size: clamp(4.5rem, 9vw, 8rem);
+      font-size: clamp(4rem, 9vw, 8rem);
       font-weight: 700; color: var(--ink); line-height: 1.1;
       opacity: 0;
-      animation: fade-up-in 1.1s cubic-bezier(0.22,1,0.36,1) forwards;
+      animation: fadeUp 1.2s cubic-bezier(0.22,1,0.36,1) forwards;
       animation-delay: 0.3s;
     }
-
-    /* ✏️ 中文名 */
+    /* 中文名动画 */
     .hero-name-zh {
       font-family: var(--serif-zh);
-      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-      font-weight: 300; color: var(--mint-deep); letter-spacing: 0.4em;
-      margin-top: 0.4rem;
+      font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+      font-weight: 300; color: var(--mint-deep); letter-spacing: 0.45em;
+      margin-top: 0.5rem;
       opacity: 0;
-      animation: fade-up-in 0.9s ease forwards;
+      animation: fadeUp 1s ease forwards;
       animation-delay: 1.1s;
     }
-
     .hero-divider {
       width: 48px; height: 1px; background: var(--mint); margin: 1.8rem auto;
-      opacity: 0; animation: fade-up-in 0.7s ease forwards; animation-delay: 1.6s;
+      opacity: 0; animation: fadeUp 0.7s ease forwards; animation-delay: 1.7s;
     }
-
-    /* ✏️ 副标题文字 */
     .hero-sub {
-      font-size: 0.92rem; color: var(--ink-soft); line-height: 2;
-      opacity: 0; animation: fade-up-in 0.7s ease forwards; animation-delay: 1.9s;
+      font-size: 0.9rem; color: var(--ink-soft); line-height: 2.1;
+      opacity: 0; animation: fadeUp 0.7s ease forwards; animation-delay: 2s;
     }
-
     .hero-cta {
-      display: inline-block; margin-top: 2.2rem; padding: 0.8rem 2rem;
+      display: inline-block; margin-top: 2.2rem; padding: 0.85rem 2.2rem;
       border: 1px solid var(--mint); color: var(--ink-mid); text-decoration: none;
-      font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase;
+      font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase;
       transition: all 0.25s; font-weight: 400;
-      opacity: 0; animation: fade-up-in 0.7s ease forwards; animation-delay: 2.2s;
+      opacity: 0; animation: fadeUp 0.7s ease forwards; animation-delay: 2.3s;
     }
     .hero-cta:hover { background: var(--mint); color: var(--white); }
 
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━
-       About（左照片 + 右文字）
-    ━━━━━━━━━━━━━━━━━━━━━━━━ */
+    /* About - 左照片右文字 */
     #about {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 100vh;
-      background: var(--white);
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 100vh; background: var(--white);
     }
-
-    /* 左边：照片铺满 sticky */
     .about-photo-col {
-      height: 100vh;
-      position: sticky; top: 0;
-      overflow: hidden;
+      height: 100vh; position: sticky; top: 0; overflow: hidden;
     }
-    /* ✏️ 照片裁剪位置 */
     .about-photo-col img {
       width: 100%; height: 100%;
-      object-fit: cover; object-position: center top;
-      display: block;
+      object-fit: cover; object-position: center top; display: block;
     }
-
-    /* 右边：文字 */
     .about-text-col {
-      padding: 7rem 4.5rem 7rem 5rem;
+      padding: 7rem 5rem 7rem 5rem;
       display: flex; flex-direction: column; justify-content: center;
     }
-
-    /* ✏️ 右侧名字 */
     .about-name {
       font-family: var(--serif);
-      font-size: clamp(2.5rem, 4vw, 4rem);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
       font-weight: 300; color: var(--ink);
       line-height: 1.15; margin-bottom: 0.4rem;
       text-transform: uppercase; letter-spacing: 0.06em;
     }
     .about-name-zh {
       font-family: var(--serif-zh);
-      font-size: clamp(1rem, 2vw, 1.3rem);
-      font-weight: 300; color: var(--mint-deep);
-      letter-spacing: 0.3em; margin-bottom: 2.5rem;
+      font-size: 1.1rem; font-weight: 300;
+      color: var(--mint-deep); letter-spacing: 0.3em; margin-bottom: 2.5rem;
     }
-
-    /* ✏️ 正文段落 */
     .about-text-col p {
       font-size: 1rem; line-height: 1.95;
       color: var(--ink-mid); margin-bottom: 1.3rem;
     }
     .about-text-col p:last-child { margin-bottom: 0; }
 
-    /* ━━ 页脚 ━━ */
+    /* 페이지 - 页脚 */
     footer {
       text-align: center; padding: 2.5rem 1rem;
       font-size: 0.8rem; color: var(--ink-soft);
       letter-spacing: 0.05em; border-top: 1px solid var(--mint-light);
       background: var(--cream); line-height: 2;
     }
-    /* ✏️ Quote，改这里的文字 */
-    .footer-quote { font-family: var(--serif-zh); font-size: 1rem; color: var(--ink-soft); display: block; margin-bottom: 0.3rem; }
+    .footer-quote {
+      font-family: var(--serif-zh); font-size: 1rem;
+      color: var(--ink-soft); display: block; margin-bottom: 0.3rem;
+    }
 
-    /* ━━ 动画 ━━ */
-    @keyframes fade-up-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    /* 动画 */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
     .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
     .fade-in.visible { opacity: 1; transform: none; }
 
-    /* ━━ 手机端 ━━ */
+    /* 手机端 */
     @media (max-width: 768px) {
       nav { padding: 1rem 1.5rem; }
       .carousel { height: 260px; margin-top: 64px; }
@@ -213,8 +175,6 @@
 </head>
 <body>
 
-  <!-- 导航栏
-       ✏️ 复制 <li> 加导航项 -->
   <nav>
     <a href="#home" class="nav-logo">CL</a>
     <ul class="nav-links">
@@ -224,97 +184,62 @@
     </ul>
   </nav>
 
-
-  <!-- ━━ 轮播（页面最顶部）━━
-       ✏️ 照片上传到 GitHub，文件名对应下方 src
-       ✏️ 加照片：复制 carousel-slide 块，改文件名
-       ✏️ 删照片：删掉对应 carousel-slide 块 -->
+  <!-- 轮播 - 最顶部
+       上传照片到 GitHub，文件名 slide1.jpg / slide2.jpg / slide3.jpg -->
   <div class="carousel" id="mainCarousel">
     <div class="carousel-track" id="carouselTrack">
-
-      <!-- ✏️ 第1张 -->
-      <div class="carousel-slide">
-        <img src="slide1.jpg" alt="Photo 1">
-      </div>
-
-      <!-- ✏️ 第2张 -->
-      <div class="carousel-slide">
-        <img src="slide2.jpg" alt="Photo 2">
-      </div>
-
-      <!-- ✏️ 第3张 -->
+      <div class="carousel-slide"><img src="slide1.jpg" alt="Photo 1"></div>
+      <div class="carousel-slide"><img src="slide2.jpg" alt="Photo 2"></div>
       <div class="carousel-slide"><img src="slide3.jpg" alt="Photo 3"></div>
-
-      <!-- ✏️ 加第4张：复制上面一行，改文件名
-      <div class="carousel-slide"><img src="slide4.jpg" alt="Photo 4"></div>
-      -->
-
     </div>
     <button class="carousel-btn prev" id="prevBtn"><svg viewBox="0 0 18 18"><polyline points="11 4 6 9 11 14"/></svg></button>
     <button class="carousel-btn next" id="nextBtn"><svg viewBox="0 0 18 18"><polyline points="7 4 12 9 7 14"/></svg></button>
     <div class="carousel-dots" id="carouselDots"></div>
   </div>
 
-
-  <!-- ━━ 主页（全屏居中名字）━━ -->
+  <!-- 主页 - 全屏名字动画 -->
   <section id="home">
-    <!-- ✏️ 英文草书签名 -->
     <p class="hero-name-cursive">Charlotte Liu</p>
-    <!-- ✏️ 中文名 -->
     <p class="hero-name-zh">刘 赫 熙</p>
     <div class="hero-divider"></div>
-    <!-- ✏️ 副标题 -->
     <p class="hero-sub">
       Molecular and Cell Biology<br>
       University of California, San Diego<br>
-      <span style="font-size:0.85rem;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4e262b227e787f0e3b2d3d2a602b2a3b">[email&#160;protected]</a></span>
+      <span id="em"></span>
     </p>
     <a href="#about" class="hero-cta">Learn more</a>
   </section>
 
-
-  <!-- ━━ About（左照片 + 右文字）━━ -->
+  <!-- About - 左照片右文字 -->
   <section id="about">
-
-    <!-- 左边照片
-         ✏️ 换照片：重新上传 photo.jpg -->
     <div class="about-photo-col">
       <img src="photo.jpg" alt="Charlotte Liu">
     </div>
-
-    <!-- 右边文字 -->
     <div class="about-text-col fade-in">
-
-      <!-- ✏️ 名字 -->
       <h2 class="about-name">Charlotte Liu</h2>
       <p class="about-name-zh">刘 赫 熙</p>
-
-      <!-- ✏️ 第一段 -->
       <p>Hi! I'm Charlotte Liu (刘赫熙), an undergraduate student at the University of California, San Diego, class of 2029. I major in Molecular and Cell Biology with a minor in Bioethics. I grew up in Shunde, Guangdong, China. My name Hexi is pronounced "huh-see" — feel free to call me Charlotte!</p>
-
-      <!-- ✏️ 第二段 -->
       <p>I am passionate about understanding life at the molecular level. My academic journey has given me a deep appreciation for the elegance of biological systems and the power of experimental science.</p>
-
-      <!-- ✏️ 第三段 -->
       <p>Outside of academics, I find joy in ballet, figure skating, and playing the pipa (琵琶). I am a collaborator by nature and always believe in win-win solutions.</p>
-
     </div>
   </section>
 
-
-  <!-- ✏️ 页脚：改 quote 和年份 -->
+  <!-- 页脚 -->
   <footer>
     <span class="footer-quote">「路虽远，行之将至」</span>
-    © 2026 Charlotte Liu · 刘赫熙 &nbsp;·&nbsp; Built with care
+    &copy; 2026 Charlotte Liu &nbsp;&middot;&nbsp; 刘赫熙 &nbsp;&middot;&nbsp; Built with care
   </footer>
 
+  <script>
+    // 邮箱用JS拼接，避免被Cloudflare加密
+    const u = 'hel061'; const d = 'ucsd.edu';
+    const el = document.getElementById('em');
+    if (el) el.innerHTML = '<a href="mailto:' + u + '@' + d + '" style="color:var(--ink-soft);text-decoration:none;font-size:0.85rem;">' + u + '@' + d + '</a>';
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    /* 轮播（不需要改）*/
-    const track    = document.getElementById('carouselTrack');
-    const slides   = track.querySelectorAll('.carousel-slide');
+    const track = document.getElementById('carouselTrack');
+    const slides = track.querySelectorAll('.carousel-slide');
     const dotsWrap = document.getElementById('carouselDots');
-    const total    = slides.length;
+    const total = slides.length;
     let current = 0, timer;
 
     slides.forEach((_, i) => {
@@ -326,22 +251,31 @@
 
     function goTo(n) {
       current = (n + total) % total;
-      track.style.transform = `translateX(-${current * 100}%)`;
+      track.style.transform = 'translateX(-' + (current * 100) + '%)';
       dotsWrap.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === current));
     }
 
-    /* ✏️ 自动播放间隔：4000 = 4秒 */
     function startAuto() { timer = setInterval(() => goTo(current + 1), 4000); }
-    function stopAuto()  { clearInterval(timer); }
+    function stopAuto() { clearInterval(timer); }
 
     document.getElementById('prevBtn').addEventListener('click', () => { stopAuto(); goTo(current - 1); startAuto(); });
     document.getElementById('nextBtn').addEventListener('click', () => { stopAuto(); goTo(current + 1); startAuto(); });
 
     let touchX = 0;
     track.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; stopAuto(); });
-    track.addEventListener('touchend',   e => { const diff = touchX - e.changedTouches[0].clientX; if (Math.abs(diff) > 40) goTo(current + (diff > 0 ? 1 : -1)); startAuto(); });
+    track.addEventListener('touchend', e => {
+      const diff = touchX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) goTo(current + (diff > 0 ? 1 : -1));
+      startAuto();
+    });
     startAuto();
 
-    /* 滚动淡入 */
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((e,
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80);
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
